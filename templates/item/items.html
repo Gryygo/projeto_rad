@@ -4,11 +4,11 @@
 
 {% block content %}
 <div class="p-4 grid grid-cols-4 gap-4 bg-gray-100">
-    <div class="col-span-1">
-        <form class="grid grid-cols-5 gap-1" method="get" action="{% url 'apps.item:items' %}">
+    <div class="col-span-1 grid grid-rows-6 h-[70vh] sticky top-4">
+        <form class="grid grid-cols-5 gap-1 row-span-1" method="get" action="{% url 'apps.item:items' %}">
             <input placeholder="Search for a specific item" name="query" type="text" class="col-span-4 w-full py-4 px-6 border rounded-xl" value="{{ query }}">
 
-            <button class="text-lg bg-teal-500 text-white rounded-xl col-span-1 flex items-center justify-center">
+            <button class="bg-teal-500 hover:bg-teal-700 transition-all duration-300 text-white rounded-full col-span-1 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>                  
@@ -17,40 +17,51 @@
 
         <hr class="my-6">
 
-        <p class="font-semibold">Categories</p>
-        <ul>
-            {% for category in categories %}
-                <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-gray-200{% endif %}"> 
-                    <a href="{% url 'apps.item:items' %}?query={{query}}&category={{category.id}}">{{ category.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <span class="row-span-4">
+            <p class="font-semibold">Categories</p>
+            <ul class="overflow-y-auto">
+                {% for category in categories %}
+                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-gray-200{% endif %}"> 
+                        <a href="{% url 'apps.item:items' %}?query={{query}}&category={{category.id}}">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </span>
 
         <hr class="my-6">
 
-        <p class="font-semibold">Clear filters</p>
-        <ul>
-            <li><a class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white" href="{% url 'apps.item:items' %}">Clear</a></li>
-        </ul>
+        <span class="row-span-1">
+            <p class="font-semibold">Clear filters</p>
+            <ul>
+                <li><a class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white" href="{% url 'apps.item:items' %}">Clear</a></li>
+            </ul>
+        </span>
     </div>
 
     <div class="col-span-3">
-        <div class="grid grid-cols-3 gap-3">
-            {% for item in items %}
-                <div>
-                    <a href="{% url 'apps.item:detail' item.id %}">
-                        <div>
-                            <img src="{{ item.image.url }}" class="rounded-t-xl">
-                        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {% for item in items %}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="subcontainer grid gap-4">
+            {% endif %}
 
-                        <div class="p-6 bg-white rounded-b-xl">
-                            <h2 class="text-2xl">{{ item.name }}</h2>
-                            <p class="text-gray-500">Price: {{ item.price }}</p>
-                        </div>
-                    </a>
+            <div class="h-auto max-w-full rounded-lg">
+                <a href="{% url 'apps.item:detail' item.id %}">
+                    <div class="w-full h-64 relative overflow-hidden">
+                        <img class="rounded-t-xl object-cover w-full h-full transition-transform duration-300 ease-in-out transform-gpu hover:scale-110" src="{{ item.image.url }}">
+                    </div>
+
+                    <div class="p-6 bg-white rounded-b-xl">
+                        <h2 class="text-2xl">{{ item.name }}</h2>
+                        <p class="text-gray-500">Price: {{ item.price }}</p>
+                    </div>
+                </a>
+            </div>
+            {% if forloop.counter|divisibleby:3 or forloop.last %}
                 </div>
-            {% endfor %}
+            {% endif %}
+          {% endfor %}
         </div>
-    </div>
+      </div>
 </div>
 {% endblock %}

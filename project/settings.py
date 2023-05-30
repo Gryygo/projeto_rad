@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.item',
     'apps.dashboard',
-    'apps.conversation'
+    'apps.conversation',
+
+    'django_bootstrap_icons'
 ]
 
 MIDDLEWARE = [
