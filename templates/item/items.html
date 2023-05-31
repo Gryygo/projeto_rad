@@ -41,10 +41,6 @@
     <div class="col-span-3">
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           {% for item in items %}
-            {% if forloop.counter0|divisibleby:3 %}
-                <div class="subcontainer grid gap-4">
-            {% endif %}
-
             <div class="h-auto max-w-full rounded-lg">
                 <a href="{% url 'apps.item:detail' item.id %}">
                     <div class="w-full h-64 relative overflow-hidden">
@@ -57,9 +53,6 @@
                     </div>
                 </a>
             </div>
-            {% if forloop.counter|divisibleby:3 or forloop.last %}
-                </div>
-            {% endif %}
           {% endfor %}
         </div>
       </div>
