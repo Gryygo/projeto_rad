@@ -6,7 +6,7 @@ from apps.item.models import Category, Item
 from .forms import SignupForm
 
 def index(request):
-    items = Item.objects.filter(is_sold=False)[0:6]
+    items = Item.objects.filter(stock__gt = 0)[0:6]
     categories = Category.objects.all()
 
     return render(
@@ -14,6 +14,7 @@ def index(request):
         {
         'categories': categories,
         'items': items,
+        'user': ["{0}: {1}".format(field.name, getattr(request.user, field.name)) for field in request.user._meta.fields]
         }
     )
 
