@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %} 
+{% load bootstrap_icons %}
+
+{% block title %}Employees{% endblock %} 
+
+{% block content %}
+<div class="p-4 grid grid-cols-4 gap-4 bg-gray-100">
+
+    <div class="col-span-1 grid grid-rows-6 h-[70vh] sticky top-4">
+
+        <form class="grid grid-cols-5 gap-1 row-span-1" method="get" action="{% url 'apps.employee:employees' %}" >
+            <input placeholder="Search for a specific user" name="query" type="text" class="col-span-4 w-full py-4 px-6 border rounded-xl" value="{{ query }}"/>
+
+            <button class="bg-teal-500 hover:bg-teal-700 transition-all duration-300 text-white rounded-full col-span-1 flex items-center justify-center" >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+                </svg>
+            </button>
+        </form>
+
+        <span class="row-span-1">
+            <ul>
+                <li><a class="w-full text-center mt-5 py-4 px-8 inline-block bg-teal-500 text-lg rounded-xl text-white" href="{% url 'apps.employee:new' %}" >Add employee</a></li>
+            </ul>
+        </span>
+
+        <span class="row-span-1">
+            <ul>
+                <li><a class="w-full text-center mt-10 py-4 px-8 inline-block bg-teal-500 text-lg rounded-xl text-white" href="{% url 'apps.employee:new_user' %}" >Add user</a></li>
+            </ul>
+        </span>
+
+        <hr class="my-6 opacity-0" />
+
+        <div class="row-span-2"></div>
+
+        <hr class="my-6" />
+
+        <span class="row-span-1">
+            <p class="font-semibold">Clear filters</p>
+            <ul>
+                <li><a class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white" href="{% url 'apps.employee:employees' %}" >Clear</a></li>
+            </ul>
+        </span>
+    </div>
+
+    <div class="col-span-3 relative overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Id</th>
+                    <th scope="col" class="px-6 py-3">User</th>
+                    <th scope="col" class="px-6 py-3">Create</th>
+                    <th scope="col" class="px-6 py-3">Edit</th>
+                    <th scope="col" class="px-6 py-3">Delete</th>
+                    <th scope="col" class="px-6 py-3">Create user</th>
+                    <th scope="col" class="px-6 py-3">Edit user</th>
+                    <th scope="col" class="px-6 py-3">Delete user</th>
+                    <th scope="col" class="px-6 py-3"></th>
+                    <th scope="col" class="px-6 py-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for employee in employees %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ employee.id }}</td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ employee.user.username }}</td>
+                    <td scope="row" class="px-6 text- py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="flex justify-center items-center">
+                            {% if employee.can_create %} {% bs_icon "check" extra_classes="text-xl"  %} {% else %} {% bs_icon "x" extra_classes="text-xl" %} {% endif %}
+                        </span>
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="flex justify-center items-center">
+                            {% if employee.can_edit %} {% bs_icon "check" extra_classes="text-xl" %} {% else %} {% bs_icon "x" extra_classes="text-xl" %} {% endif %}
+                        </span>
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="flex justify-center items-center">
+                            {% if employee.can_delete %} {% bs_icon "check" extra_classes="text-xl" %} {% else %} {% bs_icon "x" extra_classes="text-xl" %} {% endif %}
+                        </span>
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="flex justify-center items-center">
+                            {% if employee.can_create_user %} {% bs_icon "check" extra_classes="text-xl" %} {% else %} {% bs_icon "x" extra_classes="text-xl" %} {% endif %}
+                        </span>
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="flex justify-center items-center">
+                            {% if employee.can_edit_user %} {% bs_icon "check" extra_classes="text-xl" %} {% else %} {% bs_icon "x" extra_classes="text-xl" %} {% endif %}
+                        </span>
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <span class="flex justify-center items-center">
+                            {% if employee.can_delete_user %} {% bs_icon "check" extra_classes="text-xl" %} {% else %} {% bs_icon "x" extra_classes="text-xl" %} {% endif %}
+                        </span>
+                    </td>
+
+                    <td scope="row" class="px-6 py-4 font-medium whitespace-nowrap dark:text-white">
+                        <a href="{% url 'apps.employee:edit' employee.id %}" class="flex items-center justify-center">
+                            {% bs_icon "pen-fill" extra_classes="text-lg text-teal-500" %}
+                        </a>
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium whitespace-nowrap dark:text-white">
+                        <a href="{% url 'apps.employee:delete' employee.id %}" class="flex items-center justify-center">
+                            {% bs_icon "trash-fill" extra_classes="text-lg text-red-500" %}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

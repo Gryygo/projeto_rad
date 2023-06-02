@@ -4,6 +4,7 @@ from django.db.models import Q
 
 from .models import Item, Category
 from .forms import NewItemForm, EditItemForm
+from .decorators import can_create_items, can_delete_items, can_edit_items
 
 def items(request):
     query = request.GET.get('query', '')
@@ -36,6 +37,7 @@ def detail(request, pk):
     )
 
 @login_required
+@can_create_items
 def new(request):
     if request.method == 'POST':
         form = NewItemForm(request.POST, request.FILES)
@@ -55,6 +57,7 @@ def new(request):
     })
 
 @login_required
+@can_edit_items
 def edit(request, pk):
     item = get_object_or_404(Item, pk=pk, created_by=request.user)
     if request.method == 'POST':
@@ -73,6 +76,7 @@ def edit(request, pk):
     })
 
 @login_required
+@can_delete_items
 def delete(request, pk):
     item = get_object_or_404(Item, pk=pk, created_by=request.user)
     item.delete()
