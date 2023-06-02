@@ -83,6 +83,6 @@ def new_user(request):
     else:
         form = NewUserForm()
 
-    return render(request, 'core/signup.html', {
+    return render(request, 'employee/create_user.html', {
         'form': form
     })

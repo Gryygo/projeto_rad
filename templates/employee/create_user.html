@@ -24,9 +24,14 @@
             {{ form.password1 }}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-5">
             <label class="inline-block mb-2">Confirm password</label></br>
             {{ form.password2 }}
+        </div>
+
+        <div class="mb-5 flex items-center">
+            {{ form.is_staff }}
+            <label class="inline-block ml-2">Staff</label>
         </div>
 
         {% if form.errors or form.non_field_errors  %}

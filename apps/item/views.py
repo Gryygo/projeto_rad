@@ -82,3 +82,10 @@ def delete(request, pk):
     item.delete()
 
     return redirect('apps.dashboard:index')
+
+@login_required
+def add_to_cart(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    user_profile = request.user.userprofile
+    user_profile.cart.add(item)
+    return redirect('apps.item:detail', item_id)
