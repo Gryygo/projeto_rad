@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 from .models import Item, Category
 from .forms import NewItemForm, EditItemForm
@@ -89,3 +89,33 @@ def add_to_cart(request, item_id):
     user_profile = request.user.userprofile
     user_profile.cart.add(item)
     return redirect('apps.item:detail', item_id)
+
+@login_required
+def view_cart(request):
+    user_profile = request.user.userprofile
+    cart_items = user_profile.cart.all()
+    total_price = cart_items.aggregate(total_price=Sum('price'))['total_price']
+    return render(request, 'item/cart.html', {
+        'items': cart_items,
+        'total_price': total_price
+    })
+
+@login_required
+def checkout(request):
+    user_profile = request.user.userprofile
+    cart_items = user_profile.cart.all()
+
+    for item in cart_items:
+        item.stock -= 1
+        item.save()
+
+    user_profile.cart.clear()
+
+    return redirect('apps.core:index')
+
+@login_required
+def clear_cart(request):
+    user_profile = request.user.userprofile
+    user_profile.cart.clear()
+
+    return redirect('apps.core:index')

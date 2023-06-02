@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Cart{% endblock  %}
+
+{% block content %}
+<div class="p-4 grid grid-cols-4 gap-4 bg-gray-100">
+    <div class="col-span-1 grid grid-rows-[10] h-[70vh] sticky top-4">
+
+        <h2>Total Price:</h2>
+        <p class="text-xl">
+            <strong>
+                {% if total_price > 0 %}
+                    R$ {{ total_price }}
+                {% else %}
+                
+                {% endif %}
+            </strong>
+        </p>
+        <hr class="my-6">
+
+        <span class="row-span-6">
+            <p><strong>Address</strong></p>
+            <form action=".">
+                <div class="mb-2">
+                    <label for="bairro">Bairro</label> <br>
+                    <input class="w-full py-2 px-4 rounded-xl border" name="bairro" type="text">
+                </div>
+                <div class="mb-2">
+                    <label for="rua">Rua</label> <br>
+                    <input class="w-full py-2 px-4 rounded-xl border" name="rua" type="text">
+                </div>
+                <span class="grid grid-cols-3 gap-2">
+                    <div class="col-span-1">
+                        <label for="numero">Número</label> <br>
+                        <input class="w-full py-2 px-4 rounded-xl border [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" name="numero" type="number">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="cep">CEP</label> <br>
+                        <input class="w-full py-2 px-4 rounded-xl border" name="cep" type="text">
+                    </div>
+                </span>
+            </form>
+        </span>
+
+        <hr class="my-4">
+
+        <span class="row-span-2">
+            <form class="inline-block h-[50%]" action="{% url 'apps.item:checkout' %}" method="post">
+                {% csrf_token %}
+                <button class="w-full mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Buy now</button>
+            </form>
+            <form class="inline-block h-[50%]" action="{% url 'apps.item:clear_cart' %}" method="post">
+                {% csrf_token %}
+                <button class="w-full mt-6 py-4 px-8 text-lg bg-red-500 hover:bg-red-700 rounded-xl text-white">Empty cart</button>
+            </form>
+        </span>
+    </div>
+
+    <div class="col-span-3">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {% for item in items %}
+            <div class="h-auto max-w-full rounded-lg">
+                <a href="{% url 'apps.item:detail' item.id %}">
+                    <div class="w-full h-64 relative overflow-hidden">
+                        <img class="rounded-t-xl object-cover w-full h-full transition-transform duration-300 ease-in-out transform-gpu hover:scale-110" src="{{ item.image.url }}">
+                    </div>
+
+                    <div class="p-6 bg-white rounded-b-xl">
+                        <h2 class="text-2xl">{{ item.name }}</h2>
+                        <p class="text-gray-500">Price: R$ {{ item.price }}</p>
+                    </div>
+                </a>
+            </div>
+          {% endfor %}
+        </div>
+    </div>    
+</div>
+{% endblock %}

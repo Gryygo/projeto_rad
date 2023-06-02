@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.conversation',
     'apps.employee',
-    'apps.cart',
 
     'django_bootstrap_icons'
 ]

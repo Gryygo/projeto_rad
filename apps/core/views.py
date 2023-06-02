@@ -8,7 +8,7 @@ from .forms import SignupForm
 
 @login_required
 def index(request):
-    items = Item.objects.filter(stock__gt = 0)[0:6]
+    items = Item.objects.filter(stock__gt = 0)[0:10]
     categories = Category.objects.all()
 
     return render(

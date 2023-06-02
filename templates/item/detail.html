@@ -5,7 +5,7 @@
 {% block content %}
 <div class="grid grid-cols-5 gap-6">
     <div class="col-span-3 flex justify-center items-center">
-        <img class="max-h-[30rem]" src="{{ item.image.url }}" class="rounded-xl">
+        <img class="max-h-[30rem] min-h-[30rem]" src="{{ item.image.url }}" class="rounded-xl">
     </div>
 
     <div class="col-span-2 p-6 bg-gray-100 rounded-xl border">
@@ -27,14 +27,11 @@
 
         <div class="h-[15%]">
             {% if request.user == item.created_by  %}
-                <div class="mt-6 p-6 bg-white rounded-xl">
-                    <p>This is your item!</p>
-                    <a class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl" href="{% url 'apps.item:edit' item.id %}">Edit</a>
-                    <a class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl" href="{% url 'apps.item:delete' item.id %}">Delete</a>
-                </div>
+                <a class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-xl hover:bg-blue-700" href="{% url 'apps.item:edit' item.id %}">Edit</a>
+                <a class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-400 text-white rounded-xl hover:bg-red-600" href="{% url 'apps.item:delete' item.id %}">Delete</a>
             {% else %}
-            <a href="{% url 'apps.item:add_to_cart' item.id %}" class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Add to cart</a>
-            <a href="{% url 'apps.conversation:new' item.id %}" class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-400 text-white rounded-xl hover:bg-blue-600">Talk to seller</a>
+                <a class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700" href="{% url 'apps.item:add_to_cart' item.id %}">Add to cart</a>
+                <a class="transition-all duration-300 inline-block mt-6 px-6 py-3 text-lg font-semibold bg-blue-400 text-white rounded-xl hover:bg-blue-600" href="{% url 'apps.conversation:new' item.id %}">Talk to seller</a>
             {% endif %}
         </div>
     </div>
